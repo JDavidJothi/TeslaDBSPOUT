@@ -1,0 +1,54 @@
+CREATE TABLE tblEmployee4(ID INT NOT NULL,NAME VARCHAR(255),GENDER VARCHAR(255),DepartmentID INT);
+
+INSERT INTO tblEmployee4 VALUES(1,'Sam','Male',1),(2,'James','Male',1),(3,'Sara','Female',3),(4,'Todd','Male',2),(5,'John','Male',3),
+                               (6,'Sana','Female',2),(7,'James','Male',1),(8,'Rob','Male',2),(9,'Steve','Male',1),(10,'Pam','Female',2);
+
+SELECT * FROM tblEmployee4;
+
+CREATE PROCEDURE spGetEmployeeCountByGender
+@GENDER NVARCHAR(20),
+@EmployeeCount INT OUTPUT
+AS
+BEGIN
+	SELECT @EmployeeCount = COUNT(ID) FROM tblEmployee4 WHERE GENDER=@GENDER;
+END
+
+DECLARE @TotalCount INT
+EXECUTE spGetEmployeeCountByGender 'Male',@TotalCount OUTPUT
+PRINT @TotalCount
+
+DECLARE @TotalCount INT
+EXECUTE spGetEmployeeCountByGender 'Male',@TotalCount 
+if(@TotalCount IS NULL)
+	PRINT('@TotalCount is NULL.')
+else
+	PRINT('@TotalCount is NOT NULL.')
+PRINT @TotalCount
+
+DECLARE @TotalCount INT
+EXECUTE spGetEmployeeCountByGender 'Male',@TotalCount OUT
+if(@TotalCount IS NULL)
+	PRINT('@TotalCount is NULL.')
+else
+	PRINT('@TotalCount is NOT NULL.')
+PRINT @TotalCount
+
+
+DECLARE @TotalCount INT
+EXECUTE spGetEmployeeCountByGender @EmployeeCount = @TotalCount OUT,@GENDER = 'Male'
+PRINT @TotalCount
+
+sp_help spGetEmployeeCountByGender;
+
+sp_help tblEmployee4;
+
+sp_helptext spGetEmployeeCountByGender;
+
+sp_depends spGetEmployeeCountByGender;
+
+tblEmployee4;
+SELECT COUNT(*) FROM tblEmployee4;
+
+SELECT COUNT(*) FROM tblEmployee4 WHERE GENDER='Male';
+
+SELECT COUNT(*) FROM tblEmployee4 WHERE GENDER=@GENDER;
